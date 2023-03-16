@@ -1,0 +1,158 @@
+﻿@*@model PagedList.IPagedList<DammioMVC1.Models.Link>
+@using PagedList.Mvc;*@
+@model IEnumerable<WebApplication1.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })*@
+
+                <button class="btn btn-sm" type="button" data-toggle="modal" href="#exampleModalToggle3" data-bs-toggle="tooltip" data-bs-placement="top" id="@item.ID" onclick="Edit(this.id)" title="Edit">
+                    Edit
+                </button>
+                <button class="btn btn-sm" type="button" data-toggle="modal" href="#exampleModalToggle2" data-bs-toggle="tooltip" data-bs-placement="top" id="@item.ID" onclick="Details(this.id)" title="Details">
+                    Detail
+                </button>
+                <button class="btn btn-sm" type="button" data-toggle="modal" href="#exampleModalToggle1" data-bs-toggle="tooltip" data-bs-placement="top" id="@item.ID" onclick="Delete(this.id)" title="Delete">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    }
+
+</table>
+@*<br />
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page }))*@
+<div class="modal fade bd-example-modal-xl" id="exampleModalToggle2" aria-labelledby="exampleModalToggleLabel2">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">Details</h5>
+                @*<div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>*@
+            </div>
+            <div id="viewDetails">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" id="exampleModalToggle1" aria-labelledby="exampleModalToggleLabel1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalToggleLabel2">Are you sure you want to delete this?</h3>
+                @*<div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>*@
+            </div>
+            <div id="viewDelete">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" id="exampleModalToggle3" aria-labelledby="exampleModalToggleLabel3">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title" id="exampleModalToggleLabel2">Edit</h2>
+                    @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
+                </div>
+            </div>
+            <div id="viewEdit">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function Details(id) {
+        $.get("@Url.Action("Details","Users")?id=" + id,
+            function (data) {
+                $("#viewDetails").html(data);
+        });
+    }
+    function Delete(id) {
+        $.get("@Url.Action("Delete", "Users")?id=" + id,
+            function (data) {
+                $("#viewDelete").html(data);
+        });
+    }
+    function Edit(id) {
+        $.get("@Url.Action("Edit", "Users")?id=" + id,
+            function (data) {
+                $("#viewEdit").html(data);
+        });
+    }
+
+</script>
